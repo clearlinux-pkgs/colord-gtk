@@ -6,7 +6,7 @@
 #
 Name     : colord-gtk
 Version  : 0.1.26
-Release  : 2
+Release  : 3
 URL      : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz
 Source0  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz
 Source99 : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz.asc
