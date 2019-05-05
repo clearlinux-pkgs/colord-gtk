@@ -6,17 +6,20 @@
 #
 Name     : colord-gtk
 Version  : 0.1.26
-Release  : 4
+Release  : 5
 URL      : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz
 Source0  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz
 Source99 : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.1.26.tar.xz.asc
-Summary  : colord-gtk is GTK integration for libcolord
+Summary  : Additional GTK support code for colord
 Group    : Development/Tools
 License  : LGPL-3.0
-Requires: colord-gtk-bin
-Requires: colord-gtk-lib
-Requires: colord-gtk-locales
-Requires: colord-gtk-data
+Requires: colord-gtk-bin = %{version}-%{release}
+Requires: colord-gtk-data = %{version}-%{release}
+Requires: colord-gtk-lib = %{version}-%{release}
+Requires: colord-gtk-license = %{version}-%{release}
+Requires: colord-gtk-locales = %{version}-%{release}
+Requires: colord-gtk-man = %{version}-%{release}
+BuildRequires : docbook-utils
 BuildRequires : docbook-xml
 BuildRequires : gettext
 BuildRequires : gobject-introspection-dev
@@ -26,7 +29,10 @@ BuildRequires : intltool
 BuildRequires : libxslt-bin
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkgconfig(colord)
+BuildRequires : pkgconfig(gio-2.0)
 BuildRequires : pkgconfig(glib-2.0)
+BuildRequires : pkgconfig(gobject-2.0)
+BuildRequires : pkgconfig(gthread-2.0)
 BuildRequires : pkgconfig(gtk+-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(lcms2)
@@ -39,7 +45,8 @@ See http://colord.hughsie.com/ for more details.
 %package bin
 Summary: bin components for the colord-gtk package.
 Group: Binaries
-Requires: colord-gtk-data
+Requires: colord-gtk-data = %{version}-%{release}
+Requires: colord-gtk-license = %{version}-%{release}
 
 %description bin
 bin components for the colord-gtk package.
@@ -56,10 +63,11 @@ data components for the colord-gtk package.
 %package dev
 Summary: dev components for the colord-gtk package.
 Group: Development
-Requires: colord-gtk-lib
-Requires: colord-gtk-bin
-Requires: colord-gtk-data
-Provides: colord-gtk-devel
+Requires: colord-gtk-lib = %{version}-%{release}
+Requires: colord-gtk-bin = %{version}-%{release}
+Requires: colord-gtk-data = %{version}-%{release}
+Provides: colord-gtk-devel = %{version}-%{release}
+Requires: colord-gtk = %{version}-%{release}
 
 %description dev
 dev components for the colord-gtk package.
@@ -68,10 +76,19 @@ dev components for the colord-gtk package.
 %package lib
 Summary: lib components for the colord-gtk package.
 Group: Libraries
-Requires: colord-gtk-data
+Requires: colord-gtk-data = %{version}-%{release}
+Requires: colord-gtk-license = %{version}-%{release}
 
 %description lib
 lib components for the colord-gtk package.
+
+
+%package license
+Summary: license components for the colord-gtk package.
+Group: Default
+
+%description license
+license components for the colord-gtk package.
 
 
 %package locales
@@ -82,18 +99,38 @@ Group: Default
 locales components for the colord-gtk package.
 
 
+%package man
+Summary: man components for the colord-gtk package.
+Group: Default
+
+%description man
+man components for the colord-gtk package.
+
+
 %prep
 %setup -q -n colord-gtk-0.1.26
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1491756496
+export SOURCE_DATE_EPOCH=1557082497
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1491756496
+export SOURCE_DATE_EPOCH=1557082497
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/colord-gtk
+cp COPYING %{buildroot}/usr/share/package-licenses/colord-gtk/COPYING
 %make_install
 %find_lang colord-gtk
 
@@ -124,6 +161,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 /usr/lib64/libcolord-gtk.so.1
 /usr/lib64/libcolord-gtk.so.1.0.3
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/colord-gtk/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/cd-convert.1
 
 %files locales -f colord-gtk.lang
 %defattr(-,root,root,-)
