@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x17ACBA8DFA970E17 (richard@hughsie.com)
 #
 Name     : colord-gtk
-Version  : 0.2.0
-Release  : 8
-URL      : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.2.0.tar.xz
-Source0  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.2.0.tar.xz
-Source1  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.2.0.tar.xz.asc
+Version  : 0.3.0
+Release  : 9
+URL      : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.0.tar.xz
+Source0  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.0.tar.xz
+Source1  : https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.0.tar.xz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : LGPL-3.0
@@ -20,15 +20,14 @@ Requires: colord-gtk-license = %{version}-%{release}
 Requires: colord-gtk-locales = %{version}-%{release}
 BuildRequires : buildreq-meson
 BuildRequires : colord-dev
-BuildRequires : docbook-utils
 BuildRequires : docbook-xml
 BuildRequires : glib-dev
-BuildRequires : gobject-introspection-dev
 BuildRequires : gtk-doc
-BuildRequires : libxslt-bin
 BuildRequires : pkgconfig(colord)
 BuildRequires : pkgconfig(glib-2.0)
+BuildRequires : pkgconfig(gobject-introspection-1.0)
 BuildRequires : pkgconfig(gtk+-3.0)
+BuildRequires : pkgconfig(gtk4)
 
 %description
 colord-gtk
@@ -101,29 +100,29 @@ locales components for the colord-gtk package.
 
 
 %prep
-%setup -q -n colord-gtk-0.2.0
-cd %{_builddir}/colord-gtk-0.2.0
+%setup -q -n colord-gtk-0.3.0
+cd %{_builddir}/colord-gtk-0.3.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605554748
+export SOURCE_DATE_EPOCH=1645038195
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dman=false  builddir
 ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/colord-gtk
-cp %{_builddir}/colord-gtk-0.2.0/COPYING %{buildroot}/usr/share/package-licenses/colord-gtk/f45ee1c765646813b442ca58de72e20a64a7ddba
+cp %{_builddir}/colord-gtk-0.3.0/COPYING %{buildroot}/usr/share/package-licenses/colord-gtk/f45ee1c765646813b442ca58de72e20a64a7ddba
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang colord-gtk
 
@@ -148,7 +147,9 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/include/colord-1/colord-gtk/cd-window-sync.h
 /usr/include/colord-1/colord-gtk/cd-window.h
 /usr/lib64/libcolord-gtk.so
+/usr/lib64/libcolord-gtk4.so
 /usr/lib64/pkgconfig/colord-gtk.pc
+/usr/lib64/pkgconfig/colord-gtk4.pc
 
 %files doc
 %defattr(0644,root,root,0755)
@@ -174,6 +175,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %defattr(-,root,root,-)
 /usr/lib64/libcolord-gtk.so.1
 /usr/lib64/libcolord-gtk.so.1.0.3
+/usr/lib64/libcolord-gtk4.so.1
+/usr/lib64/libcolord-gtk4.so.1.0.3
 
 %files license
 %defattr(0644,root,root,0755)

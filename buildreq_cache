@@ -1,10 +1,9 @@
-0.2.0
+0.3.0
 colord-dev
-docbook-utils
 docbook-xml
 glib-dev
-gobject-introspection-dev
-libxslt-bin
 pkgconfig(colord)
 pkgconfig(glib-2.0)
+pkgconfig(gobject-introspection-1.0)
 pkgconfig(gtk+-3.0)
+pkgconfig(gtk4)
